@@ -16,6 +16,11 @@ public class NotificationController {
 
     @PostMapping("/send-email")
     public void sendNotification(@RequestBody MessageDTO messageDTO) {
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         emailService.sendEmail(messageDTO);
     }
 }

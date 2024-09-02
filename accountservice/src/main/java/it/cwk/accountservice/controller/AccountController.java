@@ -1,11 +1,14 @@
 package it.cwk.accountservice.controller;
 
+import it.cwk.accountservice.client.StatisticService;
 import it.cwk.accountservice.model.AccountDTO;
+import it.cwk.accountservice.model.StatisticDTO;
 import it.cwk.accountservice.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService accountService;
+    private final StatisticService statisticService;
 
     @GetMapping
     public List<AccountDTO> getAll() {
@@ -30,6 +34,7 @@ public class AccountController {
     @PostMapping
     public AccountDTO add(@RequestBody AccountDTO accountDTO) {
         accountService.add(accountDTO);
+        statisticService.add(new StatisticDTO("Account " + accountDTO.getUsername() + " is created", new Date()));
         return accountDTO;
     }
 

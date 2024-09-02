@@ -21,11 +21,13 @@ public class AccountController {
 
     @GetMapping
     public List<AccountDTO> getAll() {
+        statisticService.add(new StatisticDTO("All accounts are requested", new Date()));
         return accountService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AccountDTO> getById(@PathVariable Long id) {
+        statisticService.add(new StatisticDTO("Account with id " + id + " is requested", new Date()));
         return Optional.ofNullable(accountService.getById(id))
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -41,11 +43,13 @@ public class AccountController {
     @PutMapping
     public void update(@RequestBody AccountDTO accountDTO) {
         accountService.update(accountDTO);
+        statisticService.add(new StatisticDTO("Account " + accountDTO.getUsername() + " is updated", new Date()));
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         accountService.delete(id);
+        statisticService.add(new StatisticDTO("Account with id " + id + " is deleted", new Date()));
     }
 
     @PutMapping("/change-password")
